@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import router
 
 app = FastAPI(
+    root_path="/Prod",
     title="NikoClip API",
     version="1.0.0",
     description="API for NikoClip",
