@@ -1,5 +1,5 @@
 [project]
-name = "smile-kiritorikun"
+name = "niko-clip-backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -14,4 +14,5 @@ dependencies = [
     "python-multipart>=0.0.9",
     "pytest>=7.0.0",
     "httpx>=0.28.1",
+    "redis>=6.4.0",
 ]

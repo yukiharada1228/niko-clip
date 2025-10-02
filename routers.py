@@ -13,15 +13,17 @@ import config
 from models.emotions_recognizer import SMILE_INDEX, SmileRecognizer
 from models.face_detector import FaceDetector
 from schemas import TaskCreateResponse, TaskResult, TaskStatus
-from services.image_service import ImageService
+from services import (ImageProcessingError, ImageService, TaskNotFoundError,
+                      TaskRepository)
 
 logger = logging.getLogger(__name__)
 
 # Create router
 router = APIRouter()
 
-# --- IN-MEMORY TASK STORAGE ---
-tasks = {}
+# --- TASK STORAGE ---
+task_repository = TaskRepository()
+
 
 # --- MODEL INITIALIZATION (global for efficiency) ---
 ie_core = Core()
@@ -93,7 +95,13 @@ def process_video_task(task_id: str, video_path: str):
             # --- Progress Update ---
             if total_frames > 0:
                 progress = int((frame_number / total_frames) * 100)
-                tasks[task_id]["progress"] = progress
+                try:
+                    task_repository.update_task(task_id, {"progress": progress})
+                except TaskNotFoundError:
+                    logger.warning(
+                        "Task %s no longer exists while updating progress", task_id
+                    )
+                    return
 
             # --- Smile Detection Logic ---
             input_frame = face_detector.prepare_frame(frame)
@@ -128,8 +136,13 @@ def process_video_task(task_id: str, video_path: str):
 
         # --- Result Finalization ---
         if not smile_candidates:
-            tasks[task_id]["status"] = "complete"
-            tasks[task_id]["results"] = []  # No smiles found
+            try:
+                task_repository.append_task_results(task_id, [])
+                task_repository.update_task(task_id, {"status": "complete"})
+            except TaskNotFoundError:
+                logger.warning(
+                    "Task %s no longer exists while finalizing empty results", task_id
+                )
             return
 
         # Sort candidates by score
@@ -160,8 +173,6 @@ def process_video_task(task_id: str, video_path: str):
                 final_results.append(task_result)
 
             except Exception as e:
-                from services.image_service import ImageProcessingError
-
                 if isinstance(e, ImageProcessingError):
                     error_info = ImageService.get_user_friendly_error_message(e)
                     logger.error(
@@ -181,14 +192,30 @@ def process_video_task(task_id: str, video_path: str):
                 if temp_image_path.exists():
                     temp_image_path.unlink()
 
-        tasks[task_id]["status"] = "complete"
-        tasks[task_id]["results"] = final_results
-        if "progress" in tasks[task_id]:
-            del tasks[task_id]["progress"]  # Clean up progress key
+        results_payload = [result.dict() for result in final_results]
+        try:
+            task_repository.append_task_results(task_id, results_payload)
+            task_repository.update_task(
+                task_id, {"status": "complete", "progress": 100}
+            )
+        except TaskNotFoundError:
+            logger.warning(
+                "Task %s no longer exists while storing final results", task_id
+            )
 
     except Exception as e:
-        tasks[task_id]["status"] = "error"
-        tasks[task_id]["error"] = str(e)
+        try:
+            task_repository.update_task(
+                task_id,
+                {
+                    "status": "error",
+                    "error": str(e),
+                },
+            )
+        except TaskNotFoundError:
+            logger.warning(
+                "Task %s no longer exists while recording error state", task_id
+            )
     finally:
         if pathlib.Path(video_path).exists():
             pathlib.Path(video_path).unlink()
@@ -210,12 +237,14 @@ async def create_task(background_tasks: BackgroundTasks, file: UploadFile = File
         shutil.copyfileobj(file.file, buffer)
 
     # Initialize task with progress 0
-    tasks[task_id] = {
-        "status": "processing",
-        "filename": file.filename,
-        "progress": 0,
-        "created_at": time.time(),
-    }
+    task_repository.create_task(
+        task_id,
+        {
+            "filename": file.filename,
+            "progress": 0,
+            "created_at": time.time(),
+        },
+    )
 
     background_tasks.add_task(process_video_task, task_id, str(upload_path))
 
@@ -225,8 +254,9 @@ async def create_task(background_tasks: BackgroundTasks, file: UploadFile = File
 @router.get("/tasks/{task_id}", response_model=TaskStatus)
 async def get_task(task_id: str):
     """Get task status and results (base64 format only)."""
-    task = tasks.get(task_id)
-    if not task:
+    try:
+        task = task_repository.get_task(task_id)
+    except TaskNotFoundError:
         raise HTTPException(status_code=404, detail="Task not found")
 
     # Convert results to Pydantic models if they exist

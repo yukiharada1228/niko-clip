@@ -38,3 +38,8 @@ EMOTIONS_RECOGNITION_MODEL_PATH = str(
 MAX_BASE64_IMAGE_SIZE_MB = int(
     os.getenv("MAX_BASE64_IMAGE_SIZE_MB", "5")
 )  # Maximum size for base64 encoding
+
+
+# Redis settings
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_TASK_TTL_SECONDS = int(os.getenv("REDIS_TASK_TTL_SECONDS", "86400"))

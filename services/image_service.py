@@ -5,7 +5,7 @@ ImageService for handling base64 image encoding and validation.
 import base64
 import logging
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from config import MAX_BASE64_IMAGE_SIZE_MB
 from schemas import TaskResult
@@ -339,28 +339,28 @@ class ImageService:
         """
         error_messages = {
             "BASE64_ENCODING_ERROR": {
-                "message": "画像の処理中にエラーが発生しました。",
-                "suggestion": "別の画像を試すか、しばらく時間をおいて再試行してください。",
+                "message": "An error occurred while processing the image.",
+                "suggestion": "Try a different image or wait and retry later.",
                 "retryable": True,
             },
             "IMAGE_SIZE_ERROR": {
-                "message": f"画像ファイルが大きすぎます（制限: {MAX_BASE64_IMAGE_SIZE_MB}MB）。",
-                "suggestion": "より小さな画像を使用するか、画像を圧縮してください。",
+                "message": f"The image file is too large (limit: {MAX_BASE64_IMAGE_SIZE_MB}MB).",
+                "suggestion": "Use a smaller image or compress the file.",
                 "retryable": False,
             },
             "IMAGE_VALIDATION_ERROR": {
-                "message": "サポートされていない画像形式です。",
-                "suggestion": "JPEG、PNG、GIF、BMP、WebP形式の画像を使用してください。",
+                "message": "The image format is not supported.",
+                "suggestion": "Use JPEG, PNG, GIF, BMP, or WebP image formats.",
                 "retryable": False,
             },
             "FALLBACK_FAILED": {
-                "message": "画像の処理に失敗しました。",
-                "suggestion": "画像ファイルが破損していないか確認し、再試行してください。",
+                "message": "Image processing failed.",
+                "suggestion": "Check that the image file is not corrupted and try again.",
                 "retryable": True,
             },
             "ALL_FALLBACKS_FAILED": {
-                "message": "画像の処理ができませんでした。",
-                "suggestion": "別の画像を使用するか、サポートにお問い合わせください。",
+                "message": "Unable to process the image.",
+                "suggestion": "Use another image or contact support.",
                 "retryable": False,
             },
         }
@@ -368,8 +368,8 @@ class ImageService:
         error_info = error_messages.get(
             error.error_code,
             {
-                "message": "予期しないエラーが発生しました。",
-                "suggestion": "しばらく時間をおいて再試行してください。",
+                "message": "An unexpected error occurred.",
+                "suggestion": "Wait a while and try again.",
                 "retryable": True,
             },
         )
