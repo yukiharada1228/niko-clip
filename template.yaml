@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  CameraDeviceId:
+    Type: String
+    Default: "0"
+  MaxBase64ImageSizeMb:
+    Type: String
+    Default: "5"
+  RedisUrl:
+    Type: String
+    Default: "redis://redis:6379/0"
+  RedisTaskTtlSeconds:
+    Type: String
+    Default: "86400"
+
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 1024
+
+Resources:
+  FastAPIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      EphemeralStorage:
+        Size: 1024
+      Environment:
+        Variables:
+          CAMERA_DEVICE_ID: !Ref CameraDeviceId
+          MAX_BASE64_IMAGE_SIZE_MB: !Ref MaxBase64ImageSizeMb
+          REDIS_URL: !Ref RedisUrl
+          REDIS_TASK_TTL_SECONDS: !Ref RedisTaskTtlSeconds
+      Events:
+        ApiEvents:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /{proxy+}
+            Method: ANY
+    Metadata:
+      Dockerfile: Dockerfile
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      # Auth:
+      #   ApiKeyRequired: true
+
+Outputs:
+  FastAPIURL:
+    Description: API Gateway endpoint URL
+    Value: !Sub https://${ApiGatewayApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/
+
+  FastAPIFunction:
+    Description: Lambda Function ARN
+    Value: !GetAtt FastAPIFunction.Arn
