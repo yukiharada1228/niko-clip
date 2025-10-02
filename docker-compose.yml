@@ -5,12 +5,12 @@ services:
     networks:
       - niko-clip-network
 
-  web:
-    build: .
-    container_name: niko-clip-web
+  backend:
+    build: ./backend
+    container_name: niko-clip-backend
     command: uv run uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       - redis
     networks:
