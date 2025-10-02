@@ -1,11 +1,18 @@
-FROM public.ecr.aws/docker/library/python:3.12.2-slim-bullseye
-COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.4 /lambda-adapter /opt/extensions/lambda-adapter
-ENV PORT=8080
-WORKDIR /var/task
+FROM ghcr.io/astral-sh/uv:0.8.22-python3.12-trixie-slim
+
+ARG APP_HOME=/app
+WORKDIR ${APP_HOME}
+
 RUN apt-get update && apt-get install -y \
     libopencv-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY requirements.txt ./
-RUN python -m pip install -r requirements.txt
+
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --frozen --no-dev
+
 COPY . .
-CMD exec uvicorn --port=$PORT main:app
+
+EXPOSE 8000
+
+CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
