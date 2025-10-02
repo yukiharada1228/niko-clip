@@ -42,6 +42,7 @@ Resources:
             Method: ANY
     Metadata:
       Dockerfile: Dockerfile
+      DockerContext: .
 
   ApiGatewayApi:
     Type: AWS::Serverless::Api
