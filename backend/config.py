@@ -16,6 +16,7 @@ MODEL_NAMES = ["face-detection-retail-0005", "emotions-recognition-retail-0003"]
 
 # Model paths
 PROJECT_ROOT = Path(__file__).parent
+UPLOADS_DIR = Path(os.getenv("UPLOADS_DIR", "/tmp/uploads"))
 FACE_DETECTION_MODEL_PATH = str(
     PROJECT_ROOT
     / "models"

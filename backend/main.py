@@ -1,9 +1,8 @@
-import pathlib
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import project modules
+import config
 from routers import router
 
 app = FastAPI(
@@ -26,7 +25,7 @@ app.add_middleware(
 )
 
 # --- DIRECTORY SETUP ---
-pathlib.Path("uploads").mkdir(exist_ok=True)
+config.UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- ROUTER SETUP ---
 app.include_router(router)

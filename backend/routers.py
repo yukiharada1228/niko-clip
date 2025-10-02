@@ -231,7 +231,8 @@ async def health():
 async def create_task(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     """Create a new video processing task."""
     task_id = str(uuid.uuid4())
-    upload_path = pathlib.Path(f"uploads/{task_id}_{file.filename}")
+    config.UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    upload_path = config.UPLOADS_DIR / f"{task_id}_{file.filename}"
 
     with upload_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
