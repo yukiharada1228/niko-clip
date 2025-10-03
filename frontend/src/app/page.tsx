@@ -218,16 +218,6 @@ export default function Home() {
               <p className="text-xs text-slate-500">みんなの笑顔をバズらせるクリップメーカー</p>
             </div>
           </div>
-          <nav className="hidden items-center gap-6 text-sm text-slate-600 sm:flex">
-            <a
-              className="transition hover:text-slate-900"
-              href={`${API_BASE_URL}/docs`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              API ドキュメント
-            </a>
-          </nav>
         </header>
 
         <main className="flex-1 px-6 pb-16 sm:px-10 lg:pb-24">
