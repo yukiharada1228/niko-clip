@@ -328,7 +328,7 @@ export default function Home() {
       <footer className="row-start-3 flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-[24px] items-center justify-center text-sm text-foreground/70 text-center sm:text-left">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="http://localhost:8000/docs"
+          href={`${API_BASE_URL}/docs`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -343,7 +343,7 @@ export default function Home() {
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="http://localhost:8000/health"
+          href={`${API_BASE_URL}/health`}
           target="_blank"
           rel="noopener noreferrer"
         >
