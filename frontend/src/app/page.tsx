@@ -275,7 +275,7 @@ export default function Home() {
 
             <section className="flex h-full flex-col justify-between rounded-3xl bg-white/80 p-6 shadow-[0_24px_60px_rgba(148,163,184,0.35)] backdrop-blur-lg sm:p-7">
               <div className="space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight text-slate-900">アップロードして話題を先取り</h2>
+                <h2 className="text-xl font-semibold tracking-tight text-slate-900">アップロードして笑顔を切り取り</h2>
                 <p className="text-sm leading-relaxed text-slate-600">
                   ファイルを選択して「解析を開始」を押すと、バズり候補の笑顔シーンを自動抽出します。
                 </p>
