@@ -29,6 +29,28 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
 
+  const handleDownloadResult = useCallback(
+    (result: TaskResult, index: number) => {
+      if (!result.image_data) {
+        return;
+      }
+
+      const baseName = filename?.replace(/\.[^/.]+$/, "") ?? "smile_scene";
+      const sanitizedTimestamp = result.timestamp.replace(/[^0-9A-Za-z_-]+/g, "");
+      const downloadName = sanitizedTimestamp
+        ? `${baseName}_${sanitizedTimestamp}`
+        : `${baseName}_${String(index + 1).padStart(2, "0")}`;
+
+      const link = document.createElement("a");
+      link.href = result.image_data;
+      link.download = `${downloadName}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    [filename],
+  );
+
   const resetState = useCallback(() => {
     setTaskId(null);
     setStatus("idle");
@@ -285,8 +307,17 @@ export default function Home() {
                     className="w-full rounded-xl object-cover"
                   />
                   <figcaption className="text-sm text-foreground/70 tracking-[-.01em]">
-                    <div>タイムスタンプ: {result.timestamp}</div>
-                    <div>スコア: {result.score.toFixed(2)}</div>
+                    <div className="space-y-1">
+                      <div>タイムスタンプ: {result.timestamp}</div>
+                      <div>スコア: {result.score.toFixed(2)}</div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadResult(result, index)}
+                      className="mt-3 inline-flex items-center gap-2 rounded-full border border-black/[.08] dark:border-white/[.145] px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a]"
+                    >
+                      ダウンロード
+                    </button>
                   </figcaption>
                 </figure>
               ))}
