@@ -203,119 +203,195 @@ export default function Home() {
   }, [selectedFile, status]);
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen px-5 pt-6 pb-16 gap-12 sm:px-12 sm:pt-10 sm:pb-20 sm:gap-16">
-      <main className="flex flex-col gap-10 sm:gap-12 row-start-2 items-center sm:items-start w-full max-w-4xl">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            動画ファイルをアップロードすると、バックエンドが笑顔シーンを解析します。
-          </li>
-          <li className="tracking-[-.01em]">
-            解析が完了すると、抽出できたシーンが下部に表示されます。
-          </li>
-        </ol>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-sky-50 text-slate-900">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.16),_transparent_55%),radial-gradient(circle_at_bottom_right,_rgba(56,189,248,0.22),_transparent_52%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-32 max-w-5xl rounded-full bg-white/60 blur-3xl" />
 
-        <section className="w-full rounded-2xl sm:rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-5 sm:p-6 shadow-sm">
-          <h2 className="text-lg font-semibold tracking-[-.01em] mb-4 text-center sm:text-left">
-            動画アップロード
-          </h2>
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 sm:px-10 sm:py-8">
+          <div className="flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-lg font-semibold tracking-tight text-amber-500 shadow-lg shadow-amber-200/40 ring-1 ring-amber-100">
+              😊
+            </span>
+            <div>
+              <p className="text-base font-semibold tracking-tight text-slate-900">niko-clip</p>
+              <p className="text-xs text-slate-500">みんなの笑顔をバズらせるクリップメーカー</p>
+            </div>
+          </div>
+          <nav className="hidden items-center gap-6 text-sm text-slate-600 sm:flex">
+            <a
+              className="transition hover:text-slate-900"
+              href={`${API_BASE_URL}/docs`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              API ドキュメント
+            </a>
+          </nav>
+        </header>
+
+        <main className="flex-1 px-6 pb-16 sm:px-10 lg:pb-24">
+          <section className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]" id="upload">
+            <div className="flex flex-col justify-center gap-10">
+              <div className="space-y-6">
+                <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+                  niko-clipで笑顔を主役に。
+                </h1>
+                <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
+                  ハッピーな表情はSNSで拡散の合図。niko-clipなら、イベント動画やVlogから最高に盛り上がった瞬間だけをサクッと抽出。サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
+                </p>
+              </div>
+
+              <div className="grid gap-5 text-sm text-slate-600" id="features">
+                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.25)]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-base font-semibold text-amber-600">
+                    1
+                  </span>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-900">動画をドロップするだけ</h3>
+                    <p>撮りたて動画でもOK。アップロードと同時に解析がスタートします。</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-100 text-base font-semibold text-sky-600">
+                    2
+                  </span>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-900">笑顔ゲージでベストを選抜</h3>
+                    <p>笑顔スコア付きで並ぶから、映える表情を迷わずピックできます。</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.12)]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-base font-semibold text-emerald-600">
+                    3
+                  </span>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-900">SNS映えする素材が完成</h3>
+                    <p>ダウンロードした画像は、そのままサムネやショートのカバーに使えます。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <section className="flex h-full flex-col justify-between rounded-3xl bg-white/80 p-6 shadow-[0_24px_60px_rgba(148,163,184,0.35)] backdrop-blur-lg sm:p-7">
+              <div className="space-y-3">
+                <h2 className="text-xl font-semibold tracking-tight text-slate-900">アップロードして話題を先取り</h2>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  ファイルを選択して「解析を開始」を押すと、バズり候補の笑顔シーンを自動抽出します。
+                </p>
+              </div>
+
           <form
-            className="flex flex-col gap-4"
+                className="mt-6 flex flex-col gap-5"
             onSubmit={(event) => {
               event.preventDefault();
               handleUpload();
             }}
           >
-            <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
               <label
                 htmlFor="video-upload"
-                className="text-sm font-medium tracking-[-.01em] text-foreground/80"
+                    className="text-sm font-medium text-slate-800"
               >
                 動画ファイル
               </label>
+                  <div className="relative">
               <input
                 id="video-upload"
                 type="file"
                 accept="video/*"
-                className="rounded-xl border border-black/[.08] dark:border-white/[.145] px-3 py-2 text-sm bg-transparent file:mr-4 file:rounded-lg file:border-0 file:bg-foreground file:px-3 file:py-1 file:text-background file:font-medium"
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 file:mr-4 file:rounded-xl file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-white file:font-semibold focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30"
                 onChange={(event) => handleFileSelect(event.target.files?.[0] ?? null)}
               />
               {filename && (
-                <p className="text-xs text-foreground/60 tracking-[-.01em]">
+                      <p className="mt-2 text-xs text-slate-500">
                   選択中: {filename}
                 </p>
               )}
+                  </div>
             </div>
 
             <button
               type="submit"
               disabled={!canSubmit}
-              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base h-11 px-4 sm:h-12 sm:px-5 w-full sm:w-auto"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 via-rose-400 to-sky-400 px-5 text-sm font-semibold text-white shadow-lg shadow-rose-200/60 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-rose-200/70 disabled:translate-y-0 disabled:opacity-50"
             >
               {status === "processing" || status === "uploading"
-                ? "処理中..."
+                    ? "解析中..."
                 : "解析を開始"}
             </button>
           </form>
 
-          <div className="mt-6 flex flex-col gap-3 text-sm tracking-[-.01em]">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-foreground/70">
-              <span className="font-medium">ステータス</span>
-              <span>{statusLabel}</span>
+              <div className="mt-8 space-y-4 rounded-2xl border border-slate-100 bg-white/80 p-5 text-sm text-slate-600">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-slate-900">現在のステータス</span>
+                  <span className="text-slate-900">{statusLabel}</span>
             </div>
             {progress !== null && (
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-xs text-foreground/60">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs text-slate-400">
                   <span>進捗</span>
                   <span>{progress}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-black/[.06] dark:bg-white/[.12] overflow-hidden">
+                    <div className="h-2.5 rounded-full bg-slate-100">
                   <div
-                    className="h-full bg-foreground transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-amber-400 via-rose-400 to-sky-400 transition-all duration-500"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
               </div>
             )}
             {error && (
-              <p className="text-sm text-red-500">{error}</p>
+                  <p className="text-sm text-rose-500">{error}</p>
             )}
           </div>
         </section>
+          </section>
 
-        {results.length > 0 && (
-          <section className="w-full rounded-2xl sm:rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-5 sm:p-6 shadow-sm">
-            <h2 className="text-lg font-semibold tracking-[-.01em] mb-4 text-center sm:text-left">
-              抽出された笑顔シーン
-            </h2>
-            <div className="grid gap-5 sm:gap-6 sm:grid-cols-2">
+          <section className="mx-auto mt-16 max-w-6xl">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
+              <h2 className="text-2xl font-semibold text-slate-900">抽出された笑顔シーン</h2>
+              <p className="text-sm text-slate-500">
+                解析が終わると、笑顔スコア順にサムネイルを表示します。気に入った瞬間をクリックして保存しましょう。
+              </p>
+            </div>
+
+            {results.length === 0 ? (
+              <div className="mt-6 rounded-3xl border border-dashed border-slate-200 bg-white/80 px-6 py-12 text-center text-sm text-slate-500">
+                まだ解析結果がありません。お気に入りの動画をアップロードして、ハッピーな瞬間を集めましょう。
+              </div>
+            ) : (
+              <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {results.map((result, index) => (
                 <figure
                   key={`${result.timestamp}-${index}`}
-                  className="flex flex-col gap-3 rounded-2xl border border-black/[.06] dark:border-white/[.1] bg-white/50 dark:bg-black/50 p-4"
+                    className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/90 shadow-[0_18px_50px_rgba(148,163,184,0.28)]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <div className="relative aspect-video overflow-hidden">
                   <img
                     src={result.image_data}
                     alt={`${result.timestamp} の笑顔シーン`}
-                    className="w-full rounded-xl object-cover"
-                  />
-                  <figcaption className="text-sm text-foreground/70 tracking-[-.01em]">
-                    <div className="space-y-1 sm:space-y-0 sm:flex sm:flex-col">
-                      <div>タイムスタンプ: {result.timestamp}</div>
-                      <div>スコア: {result.score.toFixed(2)}</div>
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                      />
+                      <div className="pointer-events-none absolute inset-x-3 -bottom-14 h-28 rounded-3xl bg-white/60 blur-2xl" />
+                    </div>
+                    <figcaption className="relative flex flex-col gap-3 px-5 pb-5 pt-4 text-sm text-slate-600">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="font-medium text-slate-900">タイムスタンプ</div>
+                        <div>{result.timestamp}</div>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="font-medium text-slate-900">笑顔スコア</div>
+                        <div className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-600">
+                          <span className="inline-block h-2 w-2 rounded-full bg-amber-500" />
+                          {result.score.toFixed(2)}
+                        </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleDownloadResult(result, index)}
-                      className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-black/[.08] dark:border-white/[.145] px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-slate-300/60 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-300/80"
                     >
                       ダウンロード
                     </button>
@@ -323,41 +399,34 @@ export default function Home() {
                 </figure>
               ))}
             </div>
+            )}
           </section>
-        )}
       </main>
-      <footer className="row-start-3 flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-[24px] items-center justify-center text-sm text-foreground/70 text-center sm:text-left">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+
+        <footer className="mt-auto border-t border-slate-200 bg-white/80 px-6 py-8 text-sm text-slate-500 backdrop-blur">
+          <div className="mx-auto flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-6">
+            <p className="text-xs text-slate-400">© {new Date().getFullYear()} niko-clip</p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a
+                className="transition hover:text-slate-900"
           href={`${API_BASE_URL}/docs`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
           API ドキュメント
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+                className="transition hover:text-slate-900"
           href={`${API_BASE_URL}/health`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
           ヘルスチェック
         </a>
+            </div>
+          </div>
       </footer>
+      </div>
     </div>
   );
 }
