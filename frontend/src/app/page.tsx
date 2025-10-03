@@ -301,6 +301,7 @@ export default function Home() {
                   key={`${result.timestamp}-${index}`}
                   className="flex flex-col gap-3 rounded-2xl border border-black/[.06] dark:border-white/[.1] bg-white/50 dark:bg-black/50 p-4"
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={result.image_data}
                     alt={`${result.timestamp} の笑顔シーン`}
