@@ -203,8 +203,8 @@ export default function Home() {
   }, [selectedFile, status]);
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-4xl">
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen px-5 pt-6 pb-16 gap-12 sm:px-12 sm:pt-10 sm:pb-20 sm:gap-16">
+      <main className="flex flex-col gap-10 sm:gap-12 row-start-2 items-center sm:items-start w-full max-w-4xl">
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -222,7 +222,7 @@ export default function Home() {
           </li>
         </ol>
 
-        <section className="w-full rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-6 shadow-sm">
+        <section className="w-full rounded-2xl sm:rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-5 sm:p-6 shadow-sm">
           <h2 className="text-lg font-semibold tracking-[-.01em] mb-4 text-center sm:text-left">
             動画アップロード
           </h2>
@@ -257,7 +257,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={!canSubmit}
-              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base h-11 px-4 sm:h-12 sm:px-5 w-full sm:w-auto"
             >
               {status === "processing" || status === "uploading"
                 ? "処理中..."
@@ -291,11 +291,11 @@ export default function Home() {
         </section>
 
         {results.length > 0 && (
-          <section className="w-full rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-6 shadow-sm">
+          <section className="w-full rounded-2xl sm:rounded-3xl border border-black/[.08] dark:border-white/[.145] bg-white/70 dark:bg-black/40 backdrop-blur p-5 sm:p-6 shadow-sm">
             <h2 className="text-lg font-semibold tracking-[-.01em] mb-4 text-center sm:text-left">
               抽出された笑顔シーン
             </h2>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-5 sm:gap-6 sm:grid-cols-2">
               {results.map((result, index) => (
                 <figure
                   key={`${result.timestamp}-${index}`}
@@ -307,14 +307,14 @@ export default function Home() {
                     className="w-full rounded-xl object-cover"
                   />
                   <figcaption className="text-sm text-foreground/70 tracking-[-.01em]">
-                    <div className="space-y-1">
+                    <div className="space-y-1 sm:space-y-0 sm:flex sm:flex-col">
                       <div>タイムスタンプ: {result.timestamp}</div>
                       <div>スコア: {result.score.toFixed(2)}</div>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleDownloadResult(result, index)}
-                      className="mt-3 inline-flex items-center gap-2 rounded-full border border-black/[.08] dark:border-white/[.145] px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a]"
+                      className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-black/[.08] dark:border-white/[.145] px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] w-full sm:w-auto"
                     >
                       ダウンロード
                     </button>
@@ -325,7 +325,7 @@ export default function Home() {
           </section>
         )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center text-sm text-foreground/70">
+      <footer className="row-start-3 flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-[24px] items-center justify-center text-sm text-foreground/70 text-center sm:text-left">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="http://localhost:8000/docs"
