@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 type TaskResult = {
   timestamp: string;
@@ -356,12 +357,13 @@ export default function Home() {
                   key={`${result.timestamp}-${index}`}
                     className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/90 shadow-[0_18px_50px_rgba(148,163,184,0.28)]"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                     <div className="relative aspect-video overflow-hidden">
-                  <img
+                  <Image
                     src={result.image_data}
                     alt={`${result.timestamp} の笑顔シーン`}
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                       <div className="pointer-events-none absolute inset-x-3 -bottom-14 h-28 rounded-3xl bg-white/60 blur-2xl" />
                     </div>
