@@ -281,7 +281,7 @@ export default function Home() {
             </span>
             <div>
               <p className="text-base font-semibold tracking-tight text-slate-900">niko-clip</p>
-              <p className="text-xs text-slate-500">みんなの笑顔をバズらせるクリップメーカー</p>
+              <p className="text-xs text-slate-500">みんなの笑顔を切り取るクリップメーカー</p>
             </div>
           </div>
         </header>
@@ -333,7 +333,7 @@ export default function Home() {
               <div className="space-y-3">
                 <h2 className="text-xl font-semibold tracking-tight text-slate-900">アップロードして笑顔を切り取り</h2>
                 <p className="text-sm leading-relaxed text-slate-600">
-                  ファイルを選択して「解析を開始」を押すと、バズり候補の笑顔シーンを自動抽出します。
+                  ファイルを選択して「解析を開始」を押すと、笑顔シーンを自動抽出します。
                 </p>
               </div>
 
