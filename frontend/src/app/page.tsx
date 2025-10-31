@@ -297,36 +297,6 @@ export default function Home() {
                   <strong>niko-clipは動画から笑顔を自動抽出する無料ツール</strong>です。動画をアップロードするだけで、AIが笑顔の瞬間を検出してサムネイルやSNS向けの画像素材を生成。イベント動画やVlogから最高に盛り上がった瞬間だけをサクッと抽出し、サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
                 </p>
               </div>
-
-              <div className="grid gap-5 text-sm text-slate-600" id="features">
-                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.25)]">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-base font-semibold text-amber-600">
-                    1
-                  </span>
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-900">動画をドロップするだけ</h3>
-                    <p>撮りたて動画でもOK。アップロードと同時に解析がスタートします。</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-100 text-base font-semibold text-sky-600">
-                    2
-                  </span>
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-900">笑顔ゲージでベストを選抜</h3>
-                    <p>笑顔スコア付きで並ぶから、映える表情を迷わずピックできます。</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 rounded-3xl bg-white/80 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.12)]">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-base font-semibold text-emerald-600">
-                    3
-                  </span>
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-900">SNS映えする素材が完成</h3>
-                    <p>ダウンロードした画像は、そのままサムネやショートのカバーに使えます。</p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <section className="flex h-full flex-col justify-between rounded-3xl bg-white/80 p-6 shadow-[0_24px_60px_rgba(148,163,184,0.35)] backdrop-blur-lg sm:p-7">
@@ -459,7 +429,7 @@ export default function Home() {
             )}
           </section>
 
-          <section className="mx-auto mt-20 max-w-6xl">
+          <section className="mx-auto mt-16 max-w-6xl">
             <h2 className="mb-8 text-2xl font-semibold text-slate-900">よくある質問</h2>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl bg-white/80 p-6 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
