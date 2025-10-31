@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Script from "next/script";
 
 type TaskResult = {
   timestamp: string;
@@ -202,7 +203,72 @@ export default function Home() {
     return status === "idle" || status === "complete" || status === "error";
   }, [selectedFile, status]);
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : "";
+
   return (
+    <>
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "niko-clip",
+            "description": "動画から笑顔を自動抽出できる無料ツール。AIが動画を解析して笑顔の瞬間を見つけ出します。",
+            "url": baseUrl,
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "JPY"
+            },
+            "featureList": [
+              "動画から笑顔を自動抽出",
+              "AIによる笑顔スコア算出",
+              "サムネイル画像の生成",
+              "SNS向け素材の作成"
+            ],
+          })
+        }}
+      />
+      <Script
+        id="faq-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "動画から笑顔を抽出する方法は？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "動画ファイルを選択して「解析を開始」ボタンを押すだけです。AIが自動で動画を解析し、笑顔が映っているシーンを検出して抽出します。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "どんな動画形式に対応していますか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "MP4、MOV、AVIなどの一般的な動画形式に対応しています。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "笑顔の抽出精度はどのくらいですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "AIが笑顔スコアを算出するため、明るい表情や自然な笑顔を高精度で検出できます。スコアが高い順に並ぶので、最も映えるシーンを迷わず選べます。"
+                }
+              }
+            ]
+          })
+        }}
+      />
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-sky-50 text-slate-900">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.16),_transparent_55%),radial-gradient(circle_at_bottom_right,_rgba(56,189,248,0.22),_transparent_52%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-12 mx-auto h-32 max-w-5xl rounded-full bg-white/60 blur-3xl" />
@@ -225,10 +291,10 @@ export default function Home() {
             <div className="flex flex-col justify-center gap-10">
               <div className="space-y-6">
                 <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
-                  niko-clipで笑顔を主役に。
+                  動画から笑顔を抽出 - AIが自動で笑顔シーンを見つけます
                 </h1>
                 <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
-                  ハッピーな表情はSNSで拡散の合図。niko-clipなら、イベント動画やVlogから最高に盛り上がった瞬間だけをサクッと抽出。サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
+                  <strong>niko-clipは動画から笑顔を自動抽出する無料ツール</strong>です。動画をアップロードするだけで、AIが笑顔の瞬間を検出してサムネイルやSNS向けの画像素材を生成。イベント動画やVlogから最高に盛り上がった瞬間だけをサクッと抽出し、サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
                 </p>
               </div>
 
@@ -392,6 +458,36 @@ export default function Home() {
             </div>
             )}
           </section>
+
+          <section className="mx-auto mt-20 max-w-6xl">
+            <h2 className="mb-8 text-2xl font-semibold text-slate-900">よくある質問</h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="rounded-2xl bg-white/80 p-6 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
+                <h3 className="mb-3 text-lg font-semibold text-slate-900">動画から笑顔を抽出する方法は？</h3>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  動画ファイルを選択して「解析を開始」ボタンを押すだけです。AIが自動で動画を解析し、笑顔が映っているシーンを検出して抽出します。笑顔スコアが高い順に結果が表示されるので、お気に入りのシーンを簡単に見つけられます。
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/80 p-6 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
+                <h3 className="mb-3 text-lg font-semibold text-slate-900">どんな動画形式に対応していますか？</h3>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  MP4、MOV、AVIなどの一般的な動画形式に対応しています。撮りたての動画でもOK。アップロードと同時に解析がスタートし、数分で笑顔シーンが抽出されます。
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/80 p-6 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
+                <h3 className="mb-3 text-lg font-semibold text-slate-900">笑顔の抽出精度はどのくらいですか？</h3>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  AIが笑顔スコアを算出するため、明るい表情や自然な笑顔を高精度で検出できます。スコアが高い順に並ぶので、最も映えるシーンを迷わず選べます。
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/80 p-6 shadow-[0_20px_60px_rgba(148,163,184,0.18)]">
+                <h3 className="mb-3 text-lg font-semibold text-slate-900">抽出した画像の使い道は？</h3>
+                <p className="text-sm leading-relaxed text-slate-600">
+                  ダウンロードした画像は、そのままYouTubeのサムネイル、Instagramのリール、TikTokのショート動画のカバー画像として使用できます。SNS映えする素材としてそのまま活用できます。
+                </p>
+              </div>
+            </div>
+          </section>
       </main>
 
         <footer className="mt-auto border-t border-slate-200 bg-white/80 px-6 py-8 text-sm text-slate-500 backdrop-blur">
@@ -419,5 +515,6 @@ export default function Home() {
       </footer>
       </div>
     </div>
+    </>
   );
 }
