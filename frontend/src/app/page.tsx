@@ -293,9 +293,25 @@ export default function Home() {
                 <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
                   動画から笑顔を抽出 - AIが自動で笑顔シーンを見つけます
                 </h1>
-                <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
-                  <strong>niko-clipは動画から笑顔を自動抽出する無料ツール</strong>です。動画をアップロードするだけで、AIが笑顔の瞬間を検出してサムネイルやSNS向けの画像素材を生成。イベント動画やVlogから最高に盛り上がった瞬間だけをサクッと抽出し、サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
+                <p className="text-base leading-relaxed text-slate-600 sm:hidden">
+                  動画をアップロードするだけでAIが笑顔シーンをサクッと抽出。サムネやリール用に使えるベストショットがすぐに手に入ります。
                 </p>
+                <p className="hidden text-base leading-relaxed text-slate-600 sm:block sm:text-lg">
+                  <strong>niko-clipは動画から笑顔を自動抽出する無料ツール</strong>です。動画をアップロードするだけで、AIが笑顔の瞬間を検出してサムネイルやSNS向けの画像素材を生成。イベント動画やVlogから盛り上がった瞬間だけをサクッと抽出し、サムネ・ショート動画・リール用にぴったりの素材が秒で手に入ります。
+                </p>
+                <details className="rounded-2xl border border-slate-200 bg-white/70 p-4 text-sm text-slate-600 shadow-sm backdrop-blur sm:hidden">
+                  <summary className="cursor-pointer list-none font-medium text-slate-900">
+                    くわしく見る
+                  </summary>
+                  <div className="mt-3 space-y-3 text-left">
+                    <p>
+                      動画内の笑顔シーンをAIが自動で見つけ、笑顔スコア順に並べてくれるので「どの瞬間をサムネにしよう？」と迷う時間がなくなります。
+                    </p>
+                    <p>
+                      サムネイル、ショート動画、リール制作などSNS向けの素材づくりに最適。イベント動画やVlogのハイライトを素早く切り出せます。
+                    </p>
+                  </div>
+                </details>
               </div>
             </div>
 
@@ -308,6 +324,7 @@ export default function Home() {
               </div>
 
           <form
+                id="upload-form"
                 className="mt-6 flex flex-col gap-5"
             onSubmit={(event) => {
               event.preventDefault();
