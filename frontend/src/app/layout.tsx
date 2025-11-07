@@ -13,21 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "動画から笑顔を抽出 | niko-clip - 自動で笑顔シーンを見つけるAIツール",
+  title: "AI Smile Clip Extractor | niko-clip – Turn videos into thumbnail-ready smiles",
   description:
-    "動画から笑顔を自動抽出できる無料ツール。AIが動画を解析して笑顔の瞬間を見つけ出し、サムネイルやSNS向けの画像素材を生成します。サクッと動画をアップロードするだけで、笑顔シーンを自動でピックアップ。",
+    "niko-clip is an AI-powered smile detector that transforms long-form footage into polished, high-impact thumbnails. Upload one video and instantly get the brightest frames ranked by smile score.",
   keywords: [
-    "動画から笑顔を抽出",
-    "笑顔抽出",
-    "動画 笑顔 抽出",
-    "笑顔 自動抽出",
-    "動画クリップ",
-    "サムネイル生成",
-    "ショート動画",
-    "SNS素材",
-    "表情認識",
-    "AI 笑顔検出",
-    "リール素材",
+    "AI smile detector",
+    "video thumbnail generator",
+    "smile highlight extraction",
+    "AI video clipper",
+    "social media thumbnail tool",
+    "YouTube thumbnail automation",
+    "Instagram Reels cover creator",
+    "TikTok cover image generator",
+    "OpenVINO smile detection",
+    "FastAPI video processing",
   ],
   authors: [{ name: "niko-clip" }],
   creator: "niko-clip",
@@ -38,25 +37,26 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "ja_JP",
+    locale: "en_US",
     url: "/",
     siteName: "niko-clip",
-    title: "動画から笑顔を抽出 | niko-clip",
+    title: "AI Smile Clip Extractor | niko-clip",
     description:
-      "動画から笑顔を自動抽出できる無料ツール。AIが動画を解析して笑顔の瞬間を見つけ出します。",
+      "Transform raw video into ready-to-share smile thumbnails with niko-clip's AI-powered extraction.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "niko-clip - 動画から笑顔を抽出",
+        alt: "niko-clip – AI smile clip extractor",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "動画から笑顔を抽出 | niko-clip",
-    description: "動画から笑顔を自動抽出できる無料ツール。AIが動画を解析して笑顔の瞬間を見つけ出します。",
+    title: "AI Smile Clip Extractor | niko-clip",
+    description:
+      "Upload any video and download the happiest frames with niko-clip's AI smile detector.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -78,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
