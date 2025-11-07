@@ -1,89 +1,92 @@
 # niko-clip
 
-## 概要
-- 動画から笑顔シーンを抽出し、SNS 向けのサムネイル素材を生成するアプリケーション
-- フロントエンドは Next.js、バックエンドは FastAPI と OpenVINO で構成
-- Redis を用いて解析タスクの進捗と結果を管理
+AI-powered smile highlight generator that turns raw footage into ready-to-share thumbnails and hero frames.
 
-## 機能ハイライト
-- `POST /tasks` に動画をアップロードすると笑顔スコア付きの静止画候補を生成
-- 同時に複数タスクを処理しつつ、`GET /tasks/{task_id}` で進捗・結果を取得
-- 抽出結果は Base64 画像データとしてフロントエンドに配信し、そのままダウンロード可能
-- ユーザー向けに処理中・完了・エラーなどの状態をリアルタイム表示
+## Overview
+- Extract the happiest frames from any video and generate download-ready assets for social media.
+- Frontend powered by Next.js; backend built with FastAPI, Redis, and OpenVINO for real-time inference.
+- Designed for content creators who need fast, on-brand thumbnails without manual frame-by-frame editing.
 
-## リポジトリ構成
+## Key Features
+- Upload a video via `POST /tasks` and receive curated still-image candidates with AI smile scores.
+- Track real-time progress and retrieve results through `GET /tasks/{task_id}`.
+- Download Base64-encoded images instantly for YouTube thumbnails, Instagram Reels covers, or TikTok shorts.
+- Show users clear status updates for processing, success, and error states.
+
+## Repository Structure
 ```
-backend/   FastAPI + OpenVINO による推論 API
-frontend/  Next.js アプリケーション
+backend/   FastAPI + OpenVINO inference API
+frontend/  Next.js single-page experience for uploads and downloads
 ```
 
-## 必要環境
-- Python 3.12 以上
-- Node.js 18 以上 (推奨: LTS)
-- Redis 6 以上
-- OpenVINO 2024.6 対応 CPU (GPU・VPU は任意)
+## Requirements
+- Python 3.12+
+- Node.js 18+ (LTS recommended)
+- Redis 6+
+- CPU compatible with OpenVINO 2024.6 (GPU / VPU optional)
 
-## セットアップ手順
+## Setup
 
-### 1. 共通準備
-1. リポジトリをクローン
-2. 必要に応じて `.env` を `backend/` 配下に配置 (サンプルは任意で追加)
-   - `UPLOADS_DIR` … 一時保存ディレクトリ (既定 `/tmp/uploads`)
-   - `REDIS_URL` … Redis 接続 URL (既定 `redis://localhost:6379/0`)
-   - `MAX_BASE64_IMAGE_SIZE_MB` … Base64 変換時の最大サイズ
+### 1. Shared Prerequisites
+1. Clone this repository.
+2. (Optional) Create `.env` inside `backend/`:
+   - `UPLOADS_DIR` — temp directory for uploaded videos (default `/tmp/uploads`).
+   - `REDIS_URL` — Redis connection string (default `redis://localhost:6379/0`).
+   - `MAX_BASE64_IMAGE_SIZE_MB` — maximum payload size when encoding images.
 
-### 2. Docker Compose でまとめて起動 (推奨)
+### 2. Run with Docker Compose (Recommended)
 ```
 cd backend
 docker compose up --build
 ```
 
-- `backend` サービスが FastAPI を、`redis` サービスが Redis を起動します
-- `http://localhost:8000/health` がヘルスチェック、`http://localhost:8000/docs` が API ドキュメント
-- 停止する場合は `docker compose down` を実行
+- `backend` service launches the FastAPI app, `redis` service runs Redis.
+- Health check: `http://localhost:8000/health`
+- Interactive docs: `http://localhost:8000/docs`
+- Stop containers with `docker compose down`.
 
-### 3. ローカル実行 (Docker を使わない場合)
-#### バックエンド
+### 3. Local Development (Without Docker)
+#### Backend
 ```
 cd backend
 
-# 依存関係のインストール (uv 利用例)
+# Install dependencies (example using uv)
 uv sync
 
-# Redis をローカルで起動 (例: brew services、もしくは docker compose で redis のみ起動)
+# Ensure Redis is running locally (brew services or docker compose for redis-only)
 
-# API を起動
+# Launch API
 uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-- OpenVINO のモデルは `backend/models/intel/` に同梱済み
-- API ドキュメントは `http://localhost:8000/docs` で確認可能
+- OpenVINO models are bundled under `backend/models/intel/`.
+- Explore the OpenAPI schema at `http://localhost:8000/docs`.
 
-#### フロントエンド
+#### Frontend
 ```
 cd frontend
 
-# 依存関係のインストール
+# Install dependencies
 npm install
 
-# 開発サーバー
+# Start the development server
 npm run dev
 ```
 
-- フロントエンドが利用する API のベース URL は `NEXT_PUBLIC_API_BASE_URL` で指定 (既定 `http://localhost:8000`)
-- ブラウザで `http://localhost:3000` を開くとアプリが表示される
+- Configure the API base URL with `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000`).
+- Visit `http://localhost:3000` to use the app.
 
-## 利用フロー
-1. フロントエンドから動画ファイルを選択しアップロード
-2. バックエンドが OpenVINO で顔検出・表情推定を行い、笑顔スコアが高いシーンを抽出
-3. 抽出結果は Base64 画像データ、タイムスタンプ、スコアとして Redis に保存
-4. クライアントはポーリングによってステータス・結果を取得し、ダウンロードリンクを提供
+## Usage Flow
+1. Select a video in the frontend and upload it.
+2. The backend detects faces, evaluates smiles, and ranks the brightest moments with OpenVINO.
+3. Results are stored in Redis with base64 image data, timestamps, and smile scores.
+4. The client polls for status updates and exposes download buttons for each best-shot frame.
 
-## 主な API エンドポイント
-- `GET /health` … ヘルスチェック
-- `POST /tasks` … 動画を受け付け、解析タスクを登録
-- `GET /tasks/{task_id}` … タスクの進捗・結果を取得 (Base64 画像データを含む)
+## Core API Endpoints
+- `GET /health` — service heartbeat.
+- `POST /tasks` — submit a new video processing task.
+- `GET /tasks/{task_id}` — fetch task status and processed results.
 
-## 開発コマンド例
-- バックエンドテスト: `uv run pytest`
-- フロントエンド Lint: `npm run lint`
+## Developer Commands
+- Backend tests: `uv run pytest`
+- Frontend lint: `npm run lint`
