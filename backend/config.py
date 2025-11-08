@@ -11,6 +11,11 @@ CAMERA_DELAY = 1
 CAMERA_WINDOW_NAME = "frame"
 ESC_KEYCODE = 27
 
+# Video processing settings
+FRAME_SAMPLE_INTERVAL_SECONDS = float(
+    os.getenv("FRAME_SAMPLE_INTERVAL_SECONDS", "0.1")
+)
+
 # OpenVINO model names
 MODEL_NAMES = ["face-detection-retail-0005", "emotions-recognition-retail-0003"]
 

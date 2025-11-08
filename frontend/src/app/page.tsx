@@ -29,6 +29,8 @@ export default function Home() {
   const [results, setResults] = useState<TaskResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
+  const [previewResult, setPreviewResult] = useState<TaskResult | null>(null);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   const handleDownloadResult = useCallback(
     (result: TaskResult, index: number) => {
@@ -59,11 +61,15 @@ export default function Home() {
     setResults([]);
     setError(null);
     setFilename(null);
+    setPreviewResult(null);
+    setPreviewIndex(null);
   }, []);
 
   const handleFileSelect = useCallback(
     (file: File | null) => {
       setSelectedFile(file);
+      setPreviewResult(null);
+      setPreviewIndex(null);
       if (file) {
         setFilename(file.name);
         setError(null);
@@ -209,6 +215,41 @@ export default function Home() {
   }, [selectedFile, status]);
 
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+
+  const handleOpenPreview = useCallback((result: TaskResult, index: number) => {
+    setPreviewResult(result);
+    setPreviewIndex(index);
+  }, []);
+
+  const handleClosePreview = useCallback(() => {
+    setPreviewResult(null);
+    setPreviewIndex(null);
+  }, []);
+
+  useEffect(() => {
+    if (!previewResult) {
+      return;
+    }
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleClosePreview();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    const previousOverflow = typeof document !== "undefined" ? document.body.style.overflow : "";
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      if (typeof document !== "undefined") {
+        document.body.style.overflow = previousOverflow;
+      }
+    };
+  }, [previewResult, handleClosePreview]);
 
   return (
     <>
@@ -426,7 +467,12 @@ export default function Home() {
                       key={`${result.timestamp}-${index}`}
                       className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white/90 shadow-[0_18px_50px_rgba(148,163,184,0.28)]"
                     >
-                      <div className="relative aspect-video overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenPreview(result, index)}
+                        className="relative aspect-video w-full overflow-hidden text-left transition duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/50"
+                        aria-label={`Preview smile moment at ${result.timestamp}`}
+                      >
                         <Image
                           src={result.image_data}
                           alt={`Smile moment at ${result.timestamp}`}
@@ -435,7 +481,7 @@ export default function Home() {
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                         <div className="pointer-events-none absolute inset-x-3 -bottom-14 h-28 rounded-3xl bg-white/60 blur-2xl" />
-                      </div>
+                      </button>
                       <figcaption className="relative flex flex-col gap-3 px-5 pb-5 pt-4 text-sm text-slate-600">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div className="font-medium text-slate-900">Timestamp</div>
@@ -448,13 +494,15 @@ export default function Home() {
                             {result.score.toFixed(2)}
                           </div>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => handleDownloadResult(result, index)}
-                          className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-slate-300/60 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-300/80"
-                        >
-                          Download
-                        </button>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadResult(result, index)}
+                            className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-slate-300/60 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-300/80"
+                          >
+                            Download
+                          </button>
+                        </div>
                       </figcaption>
                     </figure>
                   ))}
@@ -492,6 +540,70 @@ export default function Home() {
               </div>
             </section>
           </main>
+
+          {previewResult && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 px-4 py-8 backdrop-blur"
+              onClick={handleClosePreview}
+            >
+              <div
+                className="relative w-full max-w-4xl rounded-3xl bg-white/95 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.45)]"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={handleClosePreview}
+                  className="absolute right-4 top-4 rounded-full bg-slate-900/5 p-2 text-slate-500 transition hover:bg-slate-900/10 hover:text-slate-700"
+                  aria-label="Close preview"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" stroke="currentColor" fill="none" strokeWidth="1.8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                  </svg>
+                </button>
+
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,260px)]">
+                  <div className="relative aspect-video overflow-hidden rounded-2xl bg-black/80">
+                    <Image
+                      src={previewResult.image_data}
+                      alt={`Smile moment preview at ${previewResult.timestamp}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 1024px) 100vw, 65vw"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-4 text-sm text-slate-600">
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">Timestamp</div>
+                      <div className="mt-1 text-base font-medium text-slate-900">{previewResult.timestamp}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">Smile score</div>
+                      <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-600">
+                        <span className="inline-block h-2 w-2 rounded-full bg-amber-500" />
+                        {previewResult.score.toFixed(2)}
+                      </div>
+                    </div>
+                    <p>
+                      This frame ranks high for smile score—perfect for thumbnails or cover images right away.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const effectiveIndex =
+                          previewIndex ?? results.findIndex((item) => item === previewResult);
+                        handleDownloadResult(previewResult, effectiveIndex >= 0 ? effectiveIndex : 0);
+                        handleClosePreview();
+                      }}
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-slate-400/60 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-slate-400/80"
+                    >
+                      Download this image
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <footer className="mt-auto border-t border-slate-200 bg-white/80 px-6 py-8 text-sm text-slate-500 backdrop-blur">
             <div className="mx-auto flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-6">
